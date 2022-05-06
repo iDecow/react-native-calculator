@@ -1,92 +1,99 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Picker, TextInput } from 'react-native';
-import {useState} from 'react';
-import Addition from './components/Addition'
-import Soustraction from './components/Soustraction'
-import Division from './components/Division'
-import Multiplication from './components/Multiplication'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Picker,
+  TextInput,
+} from "react-native";
+import { useState } from "react";
+import Addition from "./components/Addition";
+import Soustraction from "./components/Soustraction";
+import Division from "./components/Division";
+import Multiplication from "./components/Multiplication";
 
 export default function App() {
+  // déclaration des states
+  const [firstNumber, setFirstNumber] = useState(0);
+  const [secondNumber, setSecondNumber] = useState(0);
+  const [operation, setOperation] = useState("+");
 
-const appSigne = {
-  addition : '+',
-  soustraction : "-",
-  multiplication : "*",
-  division : "/"
-}
+  //déclaration des variables
+  const appSigne = {
+    addition: "+",
+    soustraction: "-",
+    multiplication: "*",
+    division: "/",
+  };
 
+  const displayOperationComponents = () => {
+    if (operation === appSigne.addition) {
+      return(
+        <Addition operation={operation} firstNumber={firstNumber} secondNumber={secondNumber} />
+        )
+    }
+    if (operation === appSigne.soustraction) {
+      return (
+        <Soustraction operation={operation} firstNumber={firstNumber} secondNumber={secondNumber} />
+      )
+    }
+    if (operation === appSigne.multiplication){
+      return (
+        <Multiplication operation={operation} firstNumber={firstNumber} secondNumber={secondNumber} />
+      )
+    }
+    if (operation === appSigne.division){
+      return(
+        <Division operation={operation} firstNumber={firstNumber} secondNumber={secondNumber} />
+      )
+    }
+  }
 
-
-
-const [firstNumber, setFirstNumber] = useState(0)
-const [secondNumber, setSecondNumber] = useState(0)
-const [operation, setOperation] = useState("")
-let result = ""
-let string = ""
-let number = ""
-let affichage 
-
-const displaySigne = (operation) => {
-  return (
-    appSigne = operation.split(' ').map()
-  )
-}
-
-affichage = firstNumber + " " + operation + " " + secondNumber + " = "
-result = firstNumber, operation, secondNumber 
-
+  //return: ne contient que du rendu HTML
   return (
     <View style={styles.container}>
-        <Button 
-          title="="  
-          onPress={() => {
-            
-          }}               
-        />
-      <Text>{result}</Text>
-      <Text>{affichage}</Text>
+      {/* Permet à l'utilisateur de rentrer le premier nombre*/}
       <TextInput
-      style={styles.input} 
-      placeholder="Second chiffre/nombre"
-      onChangeText={secondNumber => {
-        setSecondNumber(secondNumber)
-      }}
+        style={styles.input}
+        placeholder="Premier chiffre/nombre"
+          onChangeText={(firstNumber) => {
+            setFirstNumber(firstNumber);
+        }}
       />
-      <Picker operation={operation}
-      onValueChange={(itemValue, itemIndex) => setOperation(itemValue)}
+      {/* Permet à l'utilisateur de choisir l'opération */}
+      <Picker
+        onValueChange={(signe) => {
+          setOperation(signe)
+          }
+        }
       >
-        <Picker.Item label={appSigne.addition} value="+"/>
-        <Picker.Item label={appSigne.soustraction} value="-"/>
-        <Picker.Item label={appSigne.division} value="/"/>
-        <Picker.Item label={appSigne.multiplication} value="*"/>
+        <Picker.Item label={appSigne.addition} value={appSigne.addition} />
+        <Picker.Item label={appSigne.soustraction} value={appSigne.soustraction}  />
+        <Picker.Item label={appSigne.division} value={appSigne.division} />
+        <Picker.Item label={appSigne.multiplication} value={appSigne.multiplication} />
       </Picker>
+      {/* Permet à l'utilisateur de rentrer le deuxième nombre*/}
       <TextInput
-      style={styles.input} 
-      placeholder="Premier chiffre/nombre"
-      onChangeText={firstNumber => {
-        setFirstNumber(firstNumber)
-      }}
+        style={styles.input}
+        placeholder="Deuxième chiffre/nombre"
+        onChangeText={(secondNumber) => {
+          setSecondNumber(secondNumber);
+        }}
       />
-      <Addition addi={appSigne} first={firstNumber} second={secondNumber}/>
-      <Soustraction sous={appSigne}/>
-      <Division divi={appSigne}/>
-      <Multiplication mult={appSigne}/>
-{/* 
-      <Text>{operation}</Text>
-      <Text>{firstNumber}</Text> */}
-
-      <StatusBar style="auto" />
+      {/* Affichage des composants en fonction de l'opération */}
+      {displayOperationComponents()}
     </View>
   );
 }
 
+//Gestion des styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection:'column-reverse',
-    backgroundColor: '#D3D3D3',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "column",
+    backgroundColor: "#D3D3D3",
+    alignItems: "center",
+    justifyContent: "center",
   },
   input: {
     borderRadius: 4,
