@@ -11,6 +11,7 @@ import Addition from "./components/Addition";
 import Soustraction from "./components/Soustraction";
 import Division from "./components/Division";
 import Multiplication from "./components/Multiplication";
+import axios from "axios";
 
 export default function App() {
   // déclaration des states
